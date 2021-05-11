@@ -572,7 +572,7 @@ def fraction(n):
     return f"{int(num)}/{int(den)}"
 
 
-def Lprint(text, ivalchar=100, into=None, insertindex=None):
+def Lprint(string, interval=100):
     """prints `ivalchar` characters at a time
     of a very large string: `text` if `into` is None
     if `into` provided:
@@ -582,35 +582,35 @@ def Lprint(text, ivalchar=100, into=None, insertindex=None):
         inserts `text` at 'end'
     """
     start = 0
-    limit = len(text)
-    end = ivalchar
-    if into is None:
-        while True:
-            if end > limit:
-                end = limit
-                print(' '.join(text[start:end]))
-                break
-            print(' '.join(text[start:end]))
-            start += ivalchar
-            end += ivalchar
-    elif into is not None:
-        if insertindex is None:
-            while True:
-                if end > limit:
-                    end = limit
-                    into.insert('end', ' '.join(text[start:end]))
-                    break
-                into.insert('end', ' '.join(text[start:end]))
-                start += ivalchar
-                end += ivalchar
+    limit = len(string)
+    end = interval
+    while True:
+        if end > limit:
+            end = limit
+            print(' '.join(string[start:end]))
+            break
+        print(' '.join(string[start:end]))
+        start += interval
+        end += interval
+
+
+def flattenNestedList(nestedList):
+    """
+    Converts a nested list to a flat list
+    Example:    
+    >>> d = [1, 2, 3, 4,
+                [5, 6, 7, 8, 9], 10, 11, 12,
+                [
+                    [13, 14, 15, 16], 17, 18, 19
+                ], 20
+            ]
+    >>> print(flattenNestedList(d))
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    """
+    flatList = []
+    for elem in nestedList:
+        if isinstance(elem, list):
+            flatList.extend(flattenNestedList(elem))
         else:
-            ind = insertindex
-            while True:
-                if end > limit:
-                    end = limit
-                    into.insert(ind, ' '.join(text[start:end]) + '\n')
-                    break
-                into.insert(ind, ' '.join(text[start:end]) + '\n')
-                start += ivalchar
-                end += ivalchar
-                ind = into.index('insert')
+            flatList.append(elem)    
+    return flatList
